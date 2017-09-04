@@ -1,0 +1,23 @@
+{
+  "name": "yo-bow",
+  "version": "1.0.0",
+  "description": "Yet Another Bunyan Output Wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test"
+  },
+  "keywords": [
+    "Bunyan",
+    "Pretty",
+    "Stream"
+  ],
+  "author": "Shang Heng Wei",
+  "license": "MIT",
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "through": "^2.3.8"
+  },
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}

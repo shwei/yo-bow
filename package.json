@@ -4,7 +4,7 @@
   "description": "Yet Another Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test"
+    "test": "tap test/*"
   },
   "keywords": [
     "Bunyan",
@@ -18,6 +18,6 @@
     "through": "^2.3.8"
   },
   "devDependencies": {
-    "tape": "^4.8.0"
+    "tap": "^10.7.2"
   }
 }

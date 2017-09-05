@@ -1,10 +1,10 @@
 'use strict';
 
-const test = require('tape');
+const t = require('tap');
 const yoBow = require('../');
 
-test('Get Bunyan Logger by passing name only', t => {
-  t.plan(1);
+
+t.test('Get Bunyan Logger by passing name only', t => {
   const expected = {
     printCount: 5,
     envVariables: {
@@ -22,20 +22,20 @@ test('Get Bunyan Logger by passing name only', t => {
     logger.info('success ' + printCount++);
     logger.warn('success ' + printCount++);
     logger.error('success ' + printCount++);
-    t.same(
-      printCount,
-      expected.printCount,
-      'Print Count, ' + printCount + ' is the same'
-    );
+    if (printCount === expected.printCount) {
+      t.pass('Print Count, ' + printCount + ' is the same');
+    }
+    else {
+      t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+    }
   } catch (err) {
     throw new Error(err);
   }
 
-  t.end();
+ t.end();
 });
 
-test('Get Bunyan Logger by passing a simple option object', t => {
-  t.plan(1);
+t.test('Get Bunyan Logger by passing a simple option object', t => {
   const expected = {
     printCount: 5,
     envVariables: {
@@ -59,20 +59,20 @@ test('Get Bunyan Logger by passing a simple option object', t => {
     logger.info('success ' + printCount++);
     logger.warn('success ' + printCount++);
     logger.error('success ' + printCount++);
-    t.same(
-      printCount,
-      expected.printCount,
-      'Print Count, ' + printCount + ' is the same'
-    );
+
+    if (printCount === expected.printCount) {
+        t.pass('Print Count, ' + printCount + ' is the same');
+    }
+    else {
+        t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+    }
   } catch (err) {
     throw new Error(err);
   }
-
-  t.end();
+ t.end();
 });
 
-test('Get Bunyan Logger by passing a full option object', t => {
-  t.plan(1);
+t.test('Get Bunyan Logger by passing a full option object', t => {
   const expected = {
     printCount: 5,
     envVariables: {
@@ -97,14 +97,16 @@ test('Get Bunyan Logger by passing a full option object', t => {
     logger.info('success ' + printCount++);
     logger.warn('success ' + printCount++);
     logger.error('success ' + printCount++);
-    t.same(
-      printCount,
-      expected.printCount,
-      'Print Count, ' + printCount + ' is the same'
-    );
+    if (printCount === expected.printCount) {
+        t.pass('Print Count, ' + printCount + ' is the same');
+    }
+    else {
+        t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+    }
   } catch (err) {
     throw new Error(err);
   }
-
-  t.end();
+ t.end();
 });
+
+process.exit(0);

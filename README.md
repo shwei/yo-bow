@@ -9,6 +9,8 @@ have this library also run in Microsoft Windows.
 
 ## Build status
 [![Build Status](https://travis-ci.org/shwei/yo-bow.svg?branch=master)](https://travis-ci.org/shwei/yo-bow)
+[![Build status](https://ci.appveyor.com/api/projects/status/p6edh0vg001r4e7h?svg=true)](https://ci.appveyor.com/project/shwei/yo-bow)
+[![Coverage Status](https://coveralls.io/repos/github/shwei/yo-bow/badge.svg?branch=master)](https://coveralls.io/github/shwei/yo-bow?branch=master)
 
 ## Code style
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)

@@ -4,8 +4,7 @@ A Bunyan logger instance that outputs in a non-JSON format
 ## Motivation
 Bunyan outputs in JSON format. It is great for processing the logs programmatically, but I had a hard time to read the 
 logs in that format. So I wrote this wrapper function that returns a Bunyan logger instance and outputs in a more 
-readable format to human. It is done as default by executing bunyan command in the child process. One of the aims is to 
-have this library also run in Microsoft Windows.
+readable format to human. 
 
 ## Build status
 [![Build Status](https://travis-ci.org/shwei/yo-bow.svg?branch=master)](https://travis-ci.org/shwei/yo-bow)
@@ -22,7 +21,8 @@ prettier --write --single-quote --trailing-comma=es5
 
 
 ## Features
-Easy to get Bunyan output to an easier to read format
+- Easy to have Bunyan output to a JSON format or to regular text. 
+- Also run in Microsoft Windows.
 
 
 ## Code Example
@@ -60,7 +60,7 @@ Just fork it, change it, and make a pull request!
 
 
 ## Credits
-The prettyStream function is based on @jameswyse's [comment on GitHub](https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322) at 
+The prettyStream function is based on @jameswyse's [comment on GitHub](https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322)
 
 
 ## License

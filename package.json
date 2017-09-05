@@ -4,7 +4,8 @@
   "description": "Yet Another Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*"
+    "prettify": "prettier --write --single-quote **/*.js",
+    "test": "echo $COVERALLS_REPO_TOKEN && tap test/*"
   },
   "keywords": [
     "Bunyan",
@@ -18,6 +19,8 @@
     "through": "^2.3.8"
   },
   "devDependencies": {
+    "coveralls": "2.13.1",
+    "prettier": "1.6.1",
     "tap": "^10.7.2"
   }
 }

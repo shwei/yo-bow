@@ -3,15 +3,9 @@
 const t = require('tap');
 const yoBow = require('../');
 
-
 t.test('Get Bunyan Logger by passing name only', t => {
   const expected = {
-    printCount: 5,
-    envVariables: {
-      env: 'production',
-      logLevel: 'info',
-      logToJson: false,
-    },
+    printCount: 5
   };
 
   try {
@@ -24,31 +18,31 @@ t.test('Get Bunyan Logger by passing name only', t => {
     logger.error('success ' + printCount++);
     if (printCount === expected.printCount) {
       t.pass('Print Count, ' + printCount + ' is the same');
-    }
-    else {
-      t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+    } else {
+      t.fail(
+        'Print Count, ' +
+          printCount +
+          ' does not match with expected ' +
+          expected.printCount
+      );
     }
   } catch (err) {
     throw new Error(err);
   }
 
- t.end();
+  t.end();
 });
 
 t.test('Get Bunyan Logger by passing a simple option object', t => {
   const expected = {
-    printCount: 5,
-    envVariables: {
-      env: 'production',
-      logLevel: 'info',
-      logToJson: false,
-    },
+    printCount: 5
   };
 
   const thisLogOptions = {
     name: 'test 2',
     src: true,
     logLevel: 'debug',
+    logToJson: true
   };
 
   try {
@@ -61,32 +55,32 @@ t.test('Get Bunyan Logger by passing a simple option object', t => {
     logger.error('success ' + printCount++);
 
     if (printCount === expected.printCount) {
-        t.pass('Print Count, ' + printCount + ' is the same');
-    }
-    else {
-        t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+      t.pass('Print Count, ' + printCount + ' is the same');
+    } else {
+      t.fail(
+        'Print Count, ' +
+          printCount +
+          ' does not match with expected ' +
+          expected.printCount
+      );
     }
   } catch (err) {
     throw new Error(err);
   }
- t.end();
+  t.end();
 });
 
 t.test('Get Bunyan Logger by passing a full option object', t => {
   const expected = {
-    printCount: 5,
-    envVariables: {
-      env: 'production',
-      logLevel: 'info',
-      logToJson: false,
-    },
+    printCount: 5
   };
 
   const thisLogOptions = {
     name: 'test 3',
-    src: true,
+    src: false,
     logLevel: 'trace',
     env: 'local',
+    logToJson: false
   };
 
   try {
@@ -98,15 +92,19 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
     logger.warn('success ' + printCount++);
     logger.error('success ' + printCount++);
     if (printCount === expected.printCount) {
-        t.pass('Print Count, ' + printCount + ' is the same');
-    }
-    else {
-        t.fail('Print Count, ' + printCount + ' does not match with expected ' + expected.printCount);
+      t.pass('Print Count, ' + printCount + ' is the same');
+    } else {
+      t.fail(
+        'Print Count, ' +
+          printCount +
+          ' does not match with expected ' +
+          expected.printCount
+      );
     }
   } catch (err) {
     throw new Error(err);
   }
- t.end();
+  t.end();
 });
 
 process.exit(0);

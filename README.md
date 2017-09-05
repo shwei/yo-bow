@@ -8,6 +8,7 @@ readable format to human. It is done as default by executing bunyan command in t
 have this library also run in Microsoft Windows.
 
 ## Build status
+[![Build Status](https://travis-ci.org/shwei/yo-bow.svg?branch=master)](https://travis-ci.org/shwei/yo-bow)
 
 ## Code style
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)

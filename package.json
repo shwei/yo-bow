@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prettify": "prettier --single-quote --write \"./**/*.js\"",
-    "test": "echo $COVERALLS_REPO_TOKEN && tap test/*"
+    "test": "tap test/*"
   },
   "keywords": [
     "Bunyan",

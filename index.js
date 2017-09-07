@@ -22,7 +22,7 @@ module.exports = { getLogger, logLevels: LOGGER_LEVELS };
  *  Simple Code example:
  *    const yoBow = require('yo-bow');
  *    const logger = yoBow.getLogger('test 1');
- *    logger.trace('Yeah!!');
+ *    logger.info('Yeah!!');
  *
  *  Or pass in an object:
  *    const yoBow = require('yo-bow');
@@ -36,6 +36,9 @@ module.exports = { getLogger, logLevels: LOGGER_LEVELS };
  *      logToJson: false    // Default: false. If true, output will be in JSON format. Or the environment variable,
  *                          // process.env.LOG_TO_JSON can be set.
  *    };
+ *
+ *    const logger = yoBow.getLogger(thisLogOptions);
+ *    logger.trace('Yo! Bow!!');
  *
  *
  *

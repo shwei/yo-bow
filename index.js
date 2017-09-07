@@ -12,15 +12,39 @@ const ENV_VARS = getEnvVariables();
 
 const logOptions = {
   serializers: bunyan.stdSerializers,
-  src: false,
+  src: false
 };
 
 module.exports = { getLogger, logLevels: LOGGER_LEVELS };
 
+/**
+ * Return an instance of Bunyan logger.
+ *  Simple Code example:
+ *    const yoBow = require('yo-bow');
+ *    const logger = yoBow.getLogger('test 1');
+ *    logger.trace('Yeah!!');
+ *
+ *  Or pass in an object:
+ *    const yoBow = require('yo-bow');
+ *    const thisLogOptions = {
+ *      name: 'test 3',
+ *      src: false,         // Include line number and source file; default: false
+ *      logLevel: 'trace',  // Set to a certain log level for this logger instance if log level is not set in the
+ *                          // environment variable: process.env.LOG_LEVEL
+ *      env: 'local',       // If env is local, console log will be in colors based on the log levels. env looks at
+ *                          // process.env.NODE_ENV; default: production
+ *      logToJson: false    // Default: false. If true, output will be in JSON format. Or the environment variable,
+ *                          // process.env.LOG_TO_JSON can be set.
+ *    };
+ *
+ *
+ *
+ * @param logConfig
+ */
 function getLogger(logConfig) {
   let options = {
     serializers: logOptions.serializers,
-    src: logOptions.src,
+    src: logOptions.src
   };
 
   let logLevel = ENV_VARS.logLevel;
@@ -53,16 +77,16 @@ function getLogger(logConfig) {
   options.streams = [
     {
       level: logLevel,
-      stream: prettyStream(args),
-    },
+      stream: prettyStream(args)
+    }
   ];
 
   if (logToJson) {
     options.streams = [
       {
         level: logLevel,
-        stream: process.stdout,
-      },
+        stream: process.stdout
+      }
     ];
   }
 
@@ -94,7 +118,7 @@ function prettyStream(args) {
 
   if ((bin && fs.existsSync(bin)) || bin === 'cmd') {
     const formatter = spawn(bin, args, {
-      stdio: [null, process.stdout, process.stderr],
+      stdio: [null, process.stdout, process.stderr]
     });
     stream.pipe(formatter.stdin);
   }
@@ -106,7 +130,7 @@ function getEnvVariables() {
   return {
     env: process.env.NODE_ENV || 'production',
     logLevel: getLoggerLevel(process.env.LOG_LEVEL),
-    logToJson: process.env.LOG_TO_JSON === 'true',
+    logToJson: process.env.LOG_TO_JSON === 'true'
   };
 }
 
@@ -116,9 +140,10 @@ function getEnvVariables() {
  * @returns a log level and if it's not one of the 6 choices, return "info"
  */
 function getLoggerLevel(logName) {
-  if (LOGGER_LEVELS.indexOf(logName) < 0) {
-    return 'info';
+  let foundLoggerIdx = LOGGER_LEVELS.indexOf(logName);
+  if (foundLoggerIdx < 0) {
+    foundLoggerIdx = 0;
   }
 
-  return logName;
+  return LOGGER_LEVELS[foundLoggerIdx];
 }

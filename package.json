@@ -4,13 +4,13 @@
   "description": "Yet Another Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {
-    "prettify": "prettier --write --single-quote **/*.js",
+    "prettify": "prettier --single-quote --write \"./**/*.js\"",
     "test": "echo $COVERALLS_REPO_TOKEN && tap test/*"
   },
   "keywords": [
     "Bunyan",
-    "Pretty",
-    "Stream"
+    "Pretty Stream",
+    "Bunyan Wrapper"
   ],
   "author": "Shang Heng Wei",
   "license": "MIT",

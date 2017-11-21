@@ -7,6 +7,10 @@
     "prettify": "prettier --single-quote --write \"./**/*.js\"",
     "test": "tap test/*"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shwei/yo-bow.git"
+  },
   "keywords": [
     "Bunyan",
     "Pretty Stream",

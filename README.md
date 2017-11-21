@@ -2,9 +2,9 @@
 A Bunyan logger instance that outputs in a non-JSON format
 
 ## Motivation
-Bunyan outputs in JSON format. It is great for processing the logs programmatically, but I had a hard time to read the 
-logs in that format. So I wrote this wrapper function that returns a Bunyan logger instance and outputs in a more 
-readable format to human. 
+Bunyan outputs in JSON format. It is great for processing the logs programmatically, but I had a hard time sift through the
+logs in that format during my local development. So I wrote this wrapper function that returns a Bunyan logger instance that outputs to a more
+readable format.
 
 ## Build status
 [![Build Status](https://travis-ci.org/shwei/yo-bow.svg?branch=master)](https://travis-ci.org/shwei/yo-bow)
@@ -13,23 +13,22 @@ readable format to human.
 
 ## Code style
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-prettier --write --single-quote --trailing-comma=es5
- 
+prettier --write --single-quote
+
 
 ## Tech/framework used
 [Bunyan](https://github.com/trentm/node-bunyan)
 
 
 ## Features
-- Easy to have Bunyan output to a JSON format or to regular text. 
-- Also run in Microsoft Windows.
+- Easy to have Bunyan output to a JSON format or to regular text.
+- Also works in Microsoft Windows.
 
 
 ## Code Example
 ### Use the library
 ```javascript
-    const yoBow = require('yo-bow');
-    const logger = yoBow.getLogger('test 1');
+    const logger = require('yo-bow').getLogger('test 1');
     let printCount = 0;
     logger.trace('success ' + printCount++);
     logger.debug('success ' + printCount++);

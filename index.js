@@ -15,7 +15,6 @@ const logOptions = {
   src: false
 };
 
-
 module.exports.TRACE = bunyan.TRACE;
 module.exports.DEBUG = bunyan.DEBUG;
 module.exports.INFO = bunyan.INFO;
@@ -28,17 +27,17 @@ module.exports.nameFromLevel = bunyan.nameFromLevel;
 
 module.exports = {
   getLogger,
-    logLevels: LOGGER_LEVELS,
-    TRACE: bunyan.TRACE,
-DEBUG: bunyan.DEBUG,
-INFO: bunyan.INFO,
-WARN: bunyan.WARN,
-ERROR: bunyan.ERROR,
-FATAL: bunyan.FATAL,
-resolveLevel: bunyan.resolveLevel,
-levelFromName: bunyan.levelFromName,
-nameFromLevel: bunyan.nameFromLevel,
-    LOGGER_LEVELS
+  logLevels: LOGGER_LEVELS,
+  TRACE: bunyan.TRACE,
+  DEBUG: bunyan.DEBUG,
+  INFO: bunyan.INFO,
+  WARN: bunyan.WARN,
+  ERROR: bunyan.ERROR,
+  FATAL: bunyan.FATAL,
+  resolveLevel: bunyan.resolveLevel,
+  levelFromName: bunyan.levelFromName,
+  nameFromLevel: bunyan.nameFromLevel,
+  LOGGER_LEVELS
 };
 
 /**

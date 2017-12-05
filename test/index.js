@@ -80,7 +80,13 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
     src: false,
     logLevel: 'trace',
     env: 'local',
-    logToJson: false
+    logToJson: false,
+    streams: [
+      {
+        level: 'trace',
+        stream: process.stdout
+      }
+    ]
   };
 
   try {

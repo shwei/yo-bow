@@ -76,6 +76,7 @@ function getLogger(logConfig) {
   let logLevel = ENV_VARS.logLevel;
   let logToJson = ENV_VARS.logToJson;
   let env = ENV_VARS.env;
+  let streams = [];
 
   if (Object.prototype.toString.call(logConfig).indexOf('String') > -1) {
     options.name = logConfig;
@@ -91,6 +92,9 @@ function getLogger(logConfig) {
     if (logConfig.env) {
       env = logConfig.env;
     }
+    if (logConfig.streams && logConfig.streams.length > 0) {
+      streams = logConfig.streams;
+    }
   }
 
   let argColor = '--no-color';
@@ -99,23 +103,19 @@ function getLogger(logConfig) {
   }
 
   const args = [argColor];
-
-  options.streams = [
-    {
-      level: logLevel,
-      stream: prettyStream(args)
-    }
-  ];
+  let baseStream = {
+    level: logLevel,
+    stream: prettyStream(args)
+  };
 
   if (logToJson) {
-    options.streams = [
-      {
-        level: logLevel,
-        stream: process.stdout
-      }
-    ];
+    baseStream = {
+      level: logLevel,
+      stream: process.stdout
+    };
   }
-
+  streams.push(baseStream);
+  options.streams = streams;
   return bunyan.createLogger(options);
 }
 

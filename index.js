@@ -6,24 +6,9 @@ const bunyan = require('bunyan');
 const through = require('through');
 const spawn = require('child_process').spawn;
 
-const LOGGER_LEVELS = ['info', 'debug', 'error', 'fatal', 'trace', 'warn'];
+const LOGGER_LEVELS = Object.keys(bunyan.levelFromName);
 
 const ENV_VARS = getEnvVariables();
-
-const logOptions = {
-  serializers: bunyan.stdSerializers,
-  src: false
-};
-
-module.exports.TRACE = bunyan.TRACE;
-module.exports.DEBUG = bunyan.DEBUG;
-module.exports.INFO = bunyan.INFO;
-module.exports.WARN = bunyan.WARN;
-module.exports.ERROR = bunyan.ERROR;
-module.exports.FATAL = bunyan.FATAL;
-module.exports.resolveLevel = bunyan.resolveLevel;
-module.exports.levelFromName = bunyan.levelFromName;
-module.exports.nameFromLevel = bunyan.nameFromLevel;
 
 module.exports = {
   getLogger,
@@ -43,21 +28,17 @@ module.exports = {
 /**
  * Return an instance of Bunyan logger.
  *  Simple Code example:
- *    const yoBow = require('yo-bow');
- *    const logger = yoBow.getLogger('test 1');
+ *    const logger = require('yo-bow').getLogger('test 1');
  *    logger.info('Yeah!!');
  *
  *  Or pass in an object:
  *    const yoBow = require('yo-bow');
  *    const thisLogOptions = {
- *      name: 'test 3',
- *      src: false,         // Include line number and source file; default: false
- *      logLevel: 'trace',  // Set to a certain log level for this logger instance if log level is not set in the
- *                          // environment variable: process.env.LOG_LEVEL
- *      env: 'local',       // If env is local, console log will be in colors based on the log levels. env looks at
- *                          // process.env.NODE_ENV; default: production
- *      logToJson: false    // Default: false. If true, output will be in JSON format. Or the environment variable,
- *                          // process.env.LOG_TO_JSON can be set.
+ *      name: 'test 2',
+ *      src: true,          // default: false
+ *      logLevel: 'trace',  // default: info
+ *      env: 'local',       // default: production
+ *      logToJson: false    // default: false
  *    };
  *
  *    const logger = yoBow.getLogger(thisLogOptions);
@@ -65,57 +46,47 @@ module.exports = {
  *
  *
  *
- * @param logConfig
+ * @param {Object}  options           Configuration for logging
+ * @param {String}  options.name      Name of the logger
+ * @param {Boolean} options.src       If true, show line number
+ * @param {String}  options.logLevel  Set to a log level for this logger
+ *                                      instance Level: trace, debug, info,
+ *                                      warn, error, fatal.
+ *                                      Or from process.env.LOG_LEVEL
+ * @param {Boolean} options.logToJson If true, log is in JSON format.
+ *                                      Or from process.env.LOG_TO_JSON
+ * @param {String}  options.env       If env == 'local', console log
+ *                                      will be in colors based on the
+ *                                      log levels.
+ *                                      Or from process.env.NODE_ENV.
+ *                                      Default: production
+ * @param {Array}   options.streams   A list of writable streams will be
+ *                                      included with a default stream
+ *                                      that outputs to console.
+ *
  */
-function getLogger(logConfig) {
-  let options = {
-    serializers: logOptions.serializers,
-    src: logOptions.src
-  };
+function getLogger(options) {
+  options = resolveOptions(options);
 
-  let logLevel = ENV_VARS.logLevel;
-  let logToJson = ENV_VARS.logToJson;
-  let env = ENV_VARS.env;
-  let streams = [];
-
-  if (Object.prototype.toString.call(logConfig).indexOf('String') > -1) {
-    options.name = logConfig;
-  } else {
-    options.name = logConfig.name;
-    options.src = logConfig.src || false;
-    if (logConfig.logLevel) {
-      logLevel = logConfig.logLevel;
-    }
-    if (logConfig.logToJson !== undefined) {
-      logToJson = logConfig.logToJson;
-    }
-    if (logConfig.env) {
-      env = logConfig.env;
-    }
-    if (logConfig.streams && logConfig.streams.length > 0) {
-      streams = logConfig.streams;
-    }
-  }
-
-  let argColor = '--no-color';
-  if (env === 'local') {
-    argColor = '--color';
-  }
-
-  const args = [argColor];
   let baseStream = {
-    level: logLevel,
-    stream: prettyStream(args)
+    level: options.logLevel,
+    stream: process.stdout
   };
 
-  if (logToJson) {
+  if (!options.logToJson) {
     baseStream = {
-      level: logLevel,
-      stream: process.stdout
+      level: options.logLevel,
+      stream:
+        options.env == 'local'
+          ? prettyStream(['--color'])
+          : prettyStream(['--no-color'])
     };
   }
+
+  const streams = options.streams;
   streams.push(baseStream);
   options.streams = streams;
+  options.serializers = bunyan.stdSerializers;
   return bunyan.createLogger(options);
 }
 
@@ -152,24 +123,52 @@ function prettyStream(args) {
   return stream;
 }
 
+function resolveOptions(options) {
+  if (isTypeOf(options, 'String')) {
+    options = {name: options};
+  }
+  options.src = options.src == 'true' ? true : false;
+  options.logLevel = options.logLevel || ENV_VARS.logLevel;
+  options.logToJson = options.logToJson || ENV_VARS.logToJson;
+  options.env = options.env || ENV_VARS.env;
+  options.streams = options.streams || [];
+
+  return options;
+}
 function getEnvVariables() {
   return {
     env: process.env.NODE_ENV || 'production',
-    logLevel: getLoggerLevel(process.env.LOG_LEVEL),
-    logToJson: process.env.LOG_TO_JSON === 'true'
+    logLevel: getLoggerLevelName(process.env.LOG_LEVEL),
+    logToJson: process.env.LOG_TO_JSON == 'true'
   };
 }
 
 /***
  * Returns a log level. Default: info level
- * @param logName
- * @returns a log level and if it's not one of the 6 choices, return "info"
+ * @param {String} logName  Log level name
+ * @return {String}         A level: one of LOGGER_LEVELS
  */
-function getLoggerLevel(logName) {
-  let foundLoggerIdx = LOGGER_LEVELS.indexOf(logName);
+function getLoggerLevelName(logName) {
+  if (!logName) {
+    return 'info';
+  }
+  const foundLoggerIdx = LOGGER_LEVELS.indexOf(logName.toLowerCase());
   if (foundLoggerIdx < 0) {
-    foundLoggerIdx = 0;
+    return 'info';
   }
 
   return LOGGER_LEVELS[foundLoggerIdx];
+}
+
+/**
+ *
+ * @param {String} variable  this variable
+ * @param {String} type      object type
+ * @return {Boolean}         True, if the type of variable matches with type
+ */
+function isTypeOf(variable, type) {
+  const toString = Object.prototype.toString;
+  const varType = toString.call(variable).toLowerCase();
+
+  return varType.indexOf(type.toLowerCase()) > 7;
 }

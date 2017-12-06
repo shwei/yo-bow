@@ -1,6 +1,6 @@
 {
   "name": "yo-bow",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Yet Another Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,11 @@
     "type": "git",
     "url": "https://github.com/shwei/yo-bow.git"
   },
-  "keywords": ["Bunyan", "Pretty Stream", "Bunyan Wrapper"],
+  "keywords": [
+    "Bunyan",
+    "Pretty Stream",
+    "Bunyan Wrapper"
+  ],
   "author": "Shang Heng Wei",
   "license": "MIT",
   "dependencies": {

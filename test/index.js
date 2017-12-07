@@ -165,6 +165,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
     Object.defineProperty(process, 'platform', {
       value: 'Windows'
     });
+    logOptions6.logLevel = 'error';
     const logger6 = yoBow.getLogger(logOptions6);
     let printCount = 0;
     if (logger6._level <= yoBow.DEBUG) logger6.debug('success ' + ++printCount);

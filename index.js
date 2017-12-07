@@ -99,7 +99,7 @@ function prettyStream(args) {
     'bunyan'
   );
 
-  if (/^win/.test(process.platform)) {
+  if (/^win/i.test(process.platform)) {
     args = ['/c', 'bunyan'].concat(args);
     bin = 'cmd';
   }
@@ -127,8 +127,8 @@ function resolveOptions(options) {
   if (isTypeOf(options, 'String')) {
     options = {name: options};
   }
-  options.src = options.src == 'true' ? true : false;
-  options.logLevel = options.logLevel || ENV_VARS.logLevel;
+  options.src = options.src || false;
+  options.logLevel = getLoggerLevelName(options.logLevel) || ENV_VARS.logLevel;
   options.logToJson = options.logToJson || ENV_VARS.logToJson;
   options.env = options.env || ENV_VARS.env;
   options.streams = options.streams || [];

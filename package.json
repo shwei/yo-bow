@@ -1,7 +1,7 @@
 {
   "name": "yo-bow",
   "version": "1.0.4",
-  "description": "Yet Another Bunyan Output Wrapper",
+  "description": "Yet One more Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {
     "prettify": "prettier --single-quote --write \"./**/*.js\"",

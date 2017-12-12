@@ -1,6 +1,6 @@
 {
   "name": "yo-bow",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Yet One more Bunyan Output Wrapper",
   "main": "index.js",
   "scripts": {

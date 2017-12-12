@@ -89,7 +89,7 @@ function getLogger(options) {
   options.streams = streams;
   options.serializers = bunyan.stdSerializers;
   const opts = BUNYAN_LOG_OPTIONS.reduce(
-    (acc, opt) => Object.assign(acc, {[opt]: options[opt]}),
+    (acc, opt) => Object.assign(acc, { [opt]: options[opt] }),
     {}
   );
   return bunyan.createLogger(opts);
@@ -131,10 +131,10 @@ function prettyStream(args) {
 
 function resolveOptions(options) {
   if (isTypeOf(options, 'String')) {
-    options = {name: options};
+    options = { name: options };
   }
   options.src = options.src || false;
-  options.logLevel = getLoggerLevelName(options.logLevel) || ENV_VARS.logLevel;
+  options.logLevel = getLoggerLevelName(options.logLevel || ENV_VARS.logLevel);
   options.logToJson = options.logToJson || ENV_VARS.logToJson;
   options.env = options.env || ENV_VARS.env;
   options.streams = options.streams || [];

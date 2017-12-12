@@ -6,6 +6,7 @@ const bunyan = require('bunyan');
 const through = require('through');
 const spawn = require('child_process').spawn;
 
+const BUNYAN_LOG_OPTIONS = ['name', 'src', 'streams', 'serializers'];
 const LOGGER_LEVELS = Object.keys(bunyan.levelFromName);
 
 const ENV_VARS = getEnvVariables();
@@ -87,10 +88,15 @@ function getLogger(options) {
   streams.push(baseStream);
   options.streams = streams;
   options.serializers = bunyan.stdSerializers;
-  return bunyan.createLogger(options);
+  const opts = BUNYAN_LOG_OPTIONS.reduce(
+    (acc, opt) => Object.assign(acc, {[opt]: options[opt]}),
+    {}
+  );
+  return bunyan.createLogger(opts);
 }
 
-// based on the work from https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
+// Based on the work from
+// https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
 function prettyStream(args) {
   let bin = path.resolve(
     path.dirname(require.resolve('bunyan')),

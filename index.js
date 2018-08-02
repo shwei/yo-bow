@@ -101,12 +101,13 @@ function prettyStream(args) {
   let bin = path.resolve(
     path.dirname(require.resolve('bunyan')),
     '..',
-    'bin',
+    '..',
+    '.bin',
     'bunyan'
   );
 
   if (/^win/i.test(process.platform)) {
-    args = ['/c', 'bunyan'].concat(args);
+    args = ['/c', bin].concat(args);
     bin = 'cmd';
   }
 

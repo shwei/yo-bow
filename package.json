@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prettify": "prettier --single-quote --write \"./**/*.js\"",
-    "test": "tap test/*"
+    "test": "tap test/*",
+    "test:nyc": "nyc tap ./test/*.js",
+    "test:cov": "nyc report --reporter=html"
   },
   "repository": {
     "type": "git",
@@ -24,10 +26,11 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.0",
+    "nyc": "12.0.2",
     "prettier": "^1.9.0",
     "tap": "^12.0.1"
   },
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   }
 }

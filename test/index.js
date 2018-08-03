@@ -21,7 +21,7 @@ t.test('Get Bunyan Logger by passing name only', t => {
       );
     }
   } catch (err) {
-    throw new Error('test 1: %j', err);
+    consle.error('test 1: %j', err);
   }
 
   t.end();
@@ -59,7 +59,7 @@ t.test('Get Bunyan Logger by passing a simple option object', t => {
       );
     }
   } catch (err) {
-    throw new Error(thisLogOptions.name + ': %j', err);
+    consle.error(thisLogOptions.name + ': %j', err);
   }
   t.end();
 });
@@ -95,7 +95,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       );
     }
   } catch (err) {
-    throw new Error(thisLogOptions.name + ': %j', err);
+    consle.error(thisLogOptions.name + ': %j', err);
   }
 
   const logOptions4 = {
@@ -125,7 +125,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       );
     }
   } catch (err) {
-    throw new Error(logOptions4.name + ': %j', err);
+    consle.error(logOptions4.name + ': %j', err);
   }
 
   const logOptions5 = {
@@ -154,7 +154,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       );
     }
   } catch (err) {
-    throw new Error(logOptions5.name + ': %j', err);
+    consle.error(logOptions5.name + ': %j', err);
   }
 
   const logOptions6 = {
@@ -208,7 +208,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       value: this.originalPlatform
     });
   } catch (err) {
-    throw new Error(logOptions6.name + ': %j', err);
+    consle.error(logOptions6.name + ': %j', err);
   }
   t.end();
 });

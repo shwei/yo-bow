@@ -21,8 +21,7 @@
   "author": "Shang Heng Wei",
   "license": "MIT",
   "dependencies": {
-    "bunyan": "^1.8.12",
-    "through": "^2.3.8"
+    "bunyan": "^1.8.12"
   },
   "devDependencies": {
     "coveralls": "^3.0.0",

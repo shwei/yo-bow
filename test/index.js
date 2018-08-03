@@ -108,16 +108,20 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
 
   try {
     const wrongLevelLogger = yoBow.getLogger(logOptions4);
+    const expectedCount = 2;
     let printCount = 0;
     if (wrongLevelLogger._level === yoBow.INFO)
-      wrongLevelLogger.debug('success ' + printCount++);
+      wrongLevelLogger.debug('success ' + ++printCount);
     if (wrongLevelLogger._level === yoBow.INFO)
-      wrongLevelLogger.info('success ' + printCount);
-    if (printCount === 1) {
+      wrongLevelLogger.info('success ' + ++printCount);
+    if (printCount === expectedCount) {
       t.pass('Print Count, ' + printCount + ' is the same');
     } else {
       t.fail(
-        'Print Count, ' + printCount + ' does not match with expected ' + 1
+        'Print Count, ' +
+          printCount +
+          ' does not match with expected ' +
+          expectedCount
       );
     }
   } catch (err) {
@@ -156,7 +160,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
   const logOptions6 = {
     name: 'test 6',
     src: true,
-    env: 'local',
+    env: 'test',
     logToJson: false
   };
 
@@ -166,13 +170,33 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       value: 'Windows'
     });
     logOptions6.logLevel = 'error';
-    const logger6 = yoBow.getLogger(logOptions6);
+    let logger6 = yoBow.getLogger(logOptions6);
     let printCount = 0;
     if (logger6._level <= yoBow.DEBUG) logger6.debug('success ' + ++printCount);
     if (logger6._level <= yoBow.INFO) logger6.info('success ' + ++printCount);
     if (logger6._level <= yoBow.WARN) logger6.warn('success ' + ++printCount);
     if (logger6._level <= yoBow.ERROR) logger6.error('success ' + ++printCount);
+
     if (printCount === 1) {
+      t.pass('Print Count, ' + printCount + ' is the same');
+    } else {
+      t.fail(
+        'Print Count, ' + printCount + ' does not match with expected ' + 1
+      );
+    }
+
+    Object.defineProperty(process, 'platform', {
+      value: 'Darwin'
+    });
+    logOptions6.logLevel = 'debug';
+    logger6 = yoBow.getLogger(logOptions6);
+    printCount = 0;
+    if (logger6._level <= yoBow.DEBUG) logger6.debug('success ' + ++printCount);
+    if (logger6._level <= yoBow.INFO) logger6.info('success ' + ++printCount);
+    if (logger6._level <= yoBow.WARN) logger6.warn('success ' + ++printCount);
+    if (logger6._level <= yoBow.ERROR) logger6.error('success ' + ++printCount);
+
+    if (printCount === 4) {
       t.pass('Print Count, ' + printCount + ' is the same');
     } else {
       t.fail(

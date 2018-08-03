@@ -1,15 +1,15 @@
 'use strict';
 
-const fs = require('fs');
 const path = require('path');
+const {spawn} = require('child_process');
+const {PassThrough} = require('stream');
 const bunyan = require('bunyan');
-const through = require('through');
-const spawn = require('child_process').spawn;
 
 const BUNYAN_LOG_OPTIONS = ['name', 'src', 'streams', 'serializers'];
+// ["trace", "debug", "info", "warn", "error", "fatal"]
 const LOGGER_LEVELS = Object.keys(bunyan.levelFromName);
 
-const ENV_VARS = getEnvVariables();
+const DEFAULT_OPTIONS = getEnvVariables();
 
 module.exports = {
   getLogger,
@@ -75,21 +75,18 @@ function getLogger(options) {
   };
 
   if (!options.logToJson) {
-    baseStream = {
-      level: options.logLevel,
-      stream:
-        options.env == 'local'
-          ? prettyStream(['--color'])
-          : prettyStream(['--no-color'])
-    };
+    baseStream.stream =
+      options.env === 'local'
+        ? prettyStream(['--color'])
+        : prettyStream(['--no-color']);
   }
 
-  const streams = options.streams;
+  const {streams} = options;
   streams.push(baseStream);
   options.streams = streams;
   options.serializers = bunyan.stdSerializers;
   const opts = BUNYAN_LOG_OPTIONS.reduce(
-    (acc, opt) => Object.assign(acc, { [opt]: options[opt] }),
+    (acc, opt) => Object.assign(acc, {[opt]: options[opt]}),
     {}
   );
   return bunyan.createLogger(opts);
@@ -111,42 +108,33 @@ function prettyStream(args) {
     bin = 'cmd';
   }
 
-  const stream = through(
-    function write(data) {
-      this.queue(data);
-    },
-    function end() {
-      this.queue(null);
-    }
-  );
-
-  if ((bin && fs.existsSync(bin)) || bin === 'cmd') {
-    const formatter = spawn(bin, args, {
-      stdio: [null, process.stdout, process.stderr]
-    });
-    stream.pipe(formatter.stdin);
-  }
+  const stream = new PassThrough();
+  const formatter = spawn(bin, args, {
+    stdio: [null, process.stdout, process.stderr]
+  });
+  stream.pipe(formatter.stdin);
 
   return stream;
 }
 
 function resolveOptions(options) {
   if (isTypeOf(options, 'String')) {
-    options = { name: options };
+    options = {name: options};
   }
-  options.src = options.src || false;
-  options.logLevel = getLoggerLevelName(options.logLevel || ENV_VARS.logLevel);
-  options.logToJson = options.logToJson || ENV_VARS.logToJson;
-  options.env = options.env || ENV_VARS.env;
-  options.streams = options.streams || [];
+  const newOptions = Object.assign({streams: []}, DEFAULT_OPTIONS, options, {
+    logLevel: getLoggerLevelName(options.logLevel)
+  });
 
-  return options;
+  return newOptions;
 }
+
 function getEnvVariables() {
   return {
+    name: process.platform.toLowerCase() + '_' + process.pid,
     env: process.env.NODE_ENV || 'production',
+    src: process.env.LOG_SRC == 'true',
     logLevel: getLoggerLevelName(process.env.LOG_LEVEL),
-    logToJson: process.env.LOG_TO_JSON == 'true'
+    logToJson: process.env.LOG_TO_JSON == 'true' || true
   };
 }
 
@@ -156,15 +144,12 @@ function getEnvVariables() {
  * @return {String}         A level: one of LOGGER_LEVELS
  */
 function getLoggerLevelName(logName) {
-  if (!logName) {
-    return 'info';
-  }
-  const foundLoggerIdx = LOGGER_LEVELS.indexOf(logName.toLowerCase());
-  if (foundLoggerIdx < 0) {
+  let fndIdx;
+  if (!logName || (fndIdx = LOGGER_LEVELS.indexOf(logName.toLowerCase())) < 0) {
     return 'info';
   }
 
-  return LOGGER_LEVELS[foundLoggerIdx];
+  return LOGGER_LEVELS[fndIdx];
 }
 
 /**
@@ -174,8 +159,10 @@ function getLoggerLevelName(logName) {
  * @return {Boolean}         True, if the type of variable matches with type
  */
 function isTypeOf(variable, type) {
-  const toString = Object.prototype.toString;
-  const varType = toString.call(variable).toLowerCase();
-
-  return varType.indexOf(type.toLowerCase()) > 7;
+  return (
+    Object.prototype.toString
+      .call(variable)
+      .toLowerCase()
+      .indexOf(type.toLowerCase()) > 7
+  );
 }

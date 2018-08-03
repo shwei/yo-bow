@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prettify": "prettier --single-quote --write \"./**/*.js\"",
-    "test": "tap test/* --timeout=60000",
+    "test": "tap test/*",
     "test:nyc": "nyc tap ./test/*.js",
     "test:cov": "nyc report --reporter=html"
   },

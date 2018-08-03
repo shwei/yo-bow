@@ -5,4 +5,5 @@ npm-debug.log
 .npmrc
 .nyc_output
 .coveralls.yml
+.DS_Store
 coverage

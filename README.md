@@ -90,13 +90,15 @@ logger.error('success ' + printCount++);
 
 ### Actual Output
 
-{"name":"test 3","hostname":"DESKTOP-D2APBPO","pid":10115,"level":40,"msg":"success 3","time":"2018-08-03T23:46:37.146Z","v":0}<br/>
-{"name":"test 3","hostname":"DESKTOP-D2APBPO","pid":10115,"level":50,"msg":"success 4","time":"2018-08-03T23:46:37.146Z","v":0}<br/>
-[2018-08-03T23:46:37.144Z] TRACE: test 3/10115 on DESKTOP-D2APBPO: <span style="color:#4DBED5">success 0</span><br/>
-[2018-08-03T23:46:37.146Z] <span style="color:#E5E510">DEBUG</span>: test 3/10115 on DESKTOP-D2APBPO: <span style="color:#4DBED5">success 1</span><br/>
-[2018-08-03T23:46:37.146Z] <span style="color:#4DBED5">INFO</span>: test 3/10115 on DESKTOP-D2APBPO: <span style="color:#4DBED5">success 2</span><br/>
-[2018-08-03T23:46:37.146Z] <span style="color:#BC3FA8">WARN</span>: test 3/10115 on DESKTOP-D2APBPO: <span style="color:#4DBED5">success 3</span><br/>
-[2018-08-03T23:46:37.146Z] <span style="color:#CD312D">ERROR</span>: test 3/10115 on DESKTOP-D2APBPO: <span style="color:#4DBED5">success 4</span><br/>
+```
+{"name":"test 3","hostname":"DESKTOP-D2APBPO","pid":10115,"level":40,"msg":"success 3","time":"2018-08-03T23:46:37.146Z","v":0}
+{"name":"test 3","hostname":"DESKTOP-D2APBPO","pid":10115,"level":50,"msg":"success 4","time":"2018-08-03T23:46:37.146Z","v":0}
+[2018-08-03T23:46:37.144Z] TRACE: test 3/10115 on DESKTOP-D2APBPO: success 0
+[2018-08-03T23:46:37.146Z] DEBUG: test 3/10115 on DESKTOP-D2APBPO: success 1
+[2018-08-03T23:46:37.146Z] INFO:  test 3/10115 on DESKTOP-D2APBPO: success 2
+[2018-08-03T23:46:37.146Z] WARN:  test 3/10115 on DESKTOP-D2APBPO: success 3
+[2018-08-03T23:46:37.146Z] ERROR: test 3/10115 on DESKTOP-D2APBPO: success 4
+```
 
 ## Installation
 

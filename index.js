@@ -102,6 +102,7 @@ function getLogger(options) {
 function prettyStream(args, binPath) {
   const stream = new PassThrough();
   let bin = binPath || BUNYAN_BIN_PATH;
+  console.info('binPath: %s, BUNYAN_BIN_PATH: %s', binPath, BUNYAN_BIN_PATH);
 
   if (!bin) {
     return stream;

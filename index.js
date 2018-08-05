@@ -100,12 +100,7 @@ function getLogger(options) {
 // https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
 function prettyStream(args) {
   const stream = new PassThrough();
-  try {
-    stat(BUNYAN_BIN_PATH);
-  } catch (err) {
-    BUNYAN_BIN_PATH = getBunyanBinPath();
-  }
-  let bin = BUNYAN_BIN_PATH;
+  let bin = getBunyanBinPath();
 
   if (!bin) {
     return stream;

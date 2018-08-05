@@ -173,6 +173,7 @@ function getBunyanBinPath(lastPath) {
   if (!lastPath) {
     lastPath = path.resolve(path.dirname(require.resolve('bunyan')), '..');
   } else if (lastPath === __dirname) {
+    console.info('lastPath: %s matches with __dirname', lastPath);
     return '';
   }
 

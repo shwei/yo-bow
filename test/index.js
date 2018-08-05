@@ -1,8 +1,18 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const t = require('tap');
-const yoBow = require('../');
+let yoBow = require('..');
 
+function resetYoBowRequire() {
+  const yoBowPath = path.resolve(
+    path.dirname(require.resolve('..')),
+    'index.js'
+  );
+  delete require.cache[yoBowPath];
+  yoBow = require(yoBowPath);
+}
 t.test('Get Bunyan Logger by passing name only', t => {
   try {
     const logger = yoBow.getLogger('test 1');
@@ -175,6 +185,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       value: 'Windows'
     });
     logOptions6.logLevel = 'error';
+    resetYoBowRequire();
     let logger6 = yoBow.getLogger(logOptions6);
     let printCount = 0;
     if (logger6._level <= yoBow.DEBUG) logger6.debug('success ' + ++printCount);
@@ -194,6 +205,7 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
       value: 'Darwin'
     });
     logOptions6.logLevel = 'debug';
+    resetYoBowRequire();
     logger6 = yoBow.getLogger(logOptions6);
     printCount = 0;
     if (logger6._level <= yoBow.DEBUG) logger6.debug('success ' + ++printCount);
@@ -215,6 +227,84 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
   } catch (err) {
     console.error(logOptions6.name + ': %s', err);
     console.error(logOptions6.name + ': %s', err.stack);
+  }
+  t.end();
+});
+t.test('Get Bunyan Logger by passing an option object', t => {
+  const expected = {
+    printCount: 5
+  };
+
+  const thisLogOptions = {
+    name: 'test 7',
+    src: true,
+    logLevel: 'debug',
+    logToJson: false
+  };
+  const binBunyanFilePath = path.resolve(
+    path.dirname(require.resolve('bunyan')),
+    '..',
+    '..',
+    '.bin',
+    'bunyan'
+  );
+  const renameBinBunyanFilePath = path.resolve(
+    path.dirname(require.resolve('bunyan')),
+    '..',
+    '..',
+    '.bin',
+    'bunyan.bak'
+  );
+
+  try {
+    console.info(
+      'renaming %s to %s',
+      binBunyanFilePath,
+      renameBinBunyanFilePath
+    );
+    fs.renameSync(binBunyanFilePath, renameBinBunyanFilePath);
+  } catch (err) {
+    console.error(
+      'error: %s. renaming %s to %s',
+      err.stack,
+      renameBinBunyanFilePath,
+      binBunyanFilePath
+    );
+    fs.renameSync(renameBinBunyanFilePath, binBunyanFilePath);
+  }
+
+  try {
+    // const yoBowPath = path.resolve(
+    //   path.dirname(require.resolve('..')),
+    //   'index.js'
+    // );
+    // delete require.cache[yoBowPath];
+    // yoBow = require(yoBowPath);
+    resetYoBowRequire();
+
+    const logger = yoBow.getLogger(thisLogOptions);
+    let printCount = 0;
+    logger.trace('success ' + printCount++);
+    logger.debug('success ' + printCount++);
+    logger.info('success ' + printCount++);
+    logger.warn('success ' + printCount++);
+    logger.error('success ' + printCount++);
+
+    if (printCount === expected.printCount) {
+      t.pass('Print Count, ' + printCount + ' is the same');
+    } else {
+      t.fail(
+        'Print Count, ' +
+          printCount +
+          ' does not match with expected ' +
+          expected.printCount
+      );
+    }
+  } catch (err) {
+    console.error(thisLogOptions.name + ': %s', err);
+    console.error(thisLogOptions.name + ': %s', err.stack);
+  } finally {
+    fs.renameSync(renameBinBunyanFilePath, binBunyanFilePath);
   }
   t.end();
 });

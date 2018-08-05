@@ -1,5 +1,6 @@
 'use strict';
 
+const {statSync: stat} = require('fs');
 const path = require('path');
 const {spawn} = require('child_process');
 const {PassThrough} = require('stream');
@@ -10,6 +11,8 @@ const BUNYAN_LOG_OPTIONS = ['name', 'src', 'streams', 'serializers'];
 const LOGGER_LEVELS = Object.keys(bunyan.levelFromName);
 
 const DEFAULT_OPTIONS = getEnvVariables();
+const BUNYAN_BIN_PATH = getBunyanBinPath();
+const WIN_PLATFORM = /^win/i.test(process.platform);
 
 module.exports = {
   getLogger,
@@ -95,20 +98,18 @@ function getLogger(options) {
 // Based on the work from
 // https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
 function prettyStream(args) {
-  let bin = path.resolve(
-    path.dirname(require.resolve('bunyan')),
-    '..',
-    '..',
-    '.bin',
-    'bunyan'
-  );
+  const stream = new PassThrough();
+  let bin = BUNYAN_BIN_PATH;
 
-  if (/^win/i.test(process.platform)) {
+  if (!bin) {
+    return stream;
+  }
+
+  if (WIN_PLATFORM) {
     args = ['/c', bin].concat(args);
     bin = 'cmd';
   }
 
-  const stream = new PassThrough();
   const formatter = spawn(bin, args, {
     stdio: [null, process.stdout, process.stderr]
   });
@@ -165,4 +166,21 @@ function isTypeOf(variable, type) {
       .toLowerCase()
       .indexOf(type.toLowerCase()) > 7
   );
+}
+
+function getBunyanBinPath(lastPath) {
+  if (!lastPath) {
+    lastPath = path.dirname(require.resolve('bunyan'));
+  } else if (lastPath === __dirname) {
+    return '';
+  }
+
+  const guessPath = path.resolve(lastPath, '..');
+
+  try {
+    stat(path.resolve(guessPath, '.bin', 'bunyan'));
+    return path.resolve(guessPath, '.bin', 'bunyan');
+  } catch (err) {
+    return getBunyanBinPath(guessPath);
+  }
 }

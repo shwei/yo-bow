@@ -27,7 +27,8 @@ module.exports = {
   resolveLevel: bunyan.resolveLevel,
   levelFromName: bunyan.levelFromName,
   nameFromLevel: bunyan.nameFromLevel,
-  LOGGER_LEVELS
+  LOGGER_LEVELS,
+  getBunyanBinPath
 };
 
 /**

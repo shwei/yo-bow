@@ -11,9 +11,8 @@ const BUNYAN_LOG_OPTIONS = ['name', 'src', 'streams', 'serializers'];
 const LOGGER_LEVELS = Object.keys(bunyan.levelFromName);
 
 const DEFAULT_OPTIONS = getEnvVariables();
+const BUNYAN_BIN_PATH = getBunyanBinPath();
 const WIN_PLATFORM = /^win/i.test(process.platform);
-
-let BUNYAN_BIN_PATH = getBunyanBinPath();
 
 module.exports = {
   getLogger,
@@ -102,7 +101,6 @@ function getLogger(options) {
 function prettyStream(args, binPath) {
   const stream = new PassThrough();
   let bin = binPath || BUNYAN_BIN_PATH;
-  console.info('binPath: %s, BUNYAN_BIN_PATH: %s', binPath, BUNYAN_BIN_PATH);
 
   if (!bin) {
     return stream;

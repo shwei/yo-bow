@@ -170,7 +170,7 @@ function isTypeOf(variable, type) {
 
 function getBunyanBinPath(lastPath) {
   if (!lastPath) {
-    lastPath = path.dirname(require.resolve('bunyan'));
+    lastPath = path.resolve(path.dirname(require.resolve('bunyan')), '..');
   } else if (lastPath === __dirname) {
     return '';
   }

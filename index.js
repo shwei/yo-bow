@@ -82,8 +82,8 @@ function getLogger(options) {
   if (!options.logToJson) {
     baseStream.stream =
       options.env === 'local'
-        ? prettyStream(['--color'])
-        : prettyStream(['--no-color']);
+        ? prettyStream(['--color'], options.binPath)
+        : prettyStream(['--no-color'], options.binPath);
   }
 
   const {streams} = options;
@@ -99,9 +99,9 @@ function getLogger(options) {
 
 // Based on the work from
 // https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
-function prettyStream(args) {
+function prettyStream(args, binPath) {
   const stream = new PassThrough();
-  let bin = getBunyanBinPath();
+  let bin = binPath || BUNYAN_BIN_PATH;
 
   if (!bin) {
     return stream;

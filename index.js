@@ -100,7 +100,12 @@ function getLogger(options) {
 // https://github.com/trentm/node-bunyan/issues/13#issuecomment-22439322
 function prettyStream(args) {
   const stream = new PassThrough();
-  let bin = BUNYAN_BIN_PATH || (BUNYAN_BIN_PATH = getBunyanBinPath());
+  try {
+    stat(BUNYAN_BIN_PATH);
+  } catch (err) {
+    BUNYAN_BIN_PATH = getBunyanBinPath();
+  }
+  let bin = BUNYAN_BIN_PATH;
 
   if (!bin) {
     return stream;
@@ -173,7 +178,10 @@ function getBunyanBinPath(lastPath) {
   if (!lastPath) {
     lastPath = path.resolve(path.dirname(require.resolve('bunyan')), '..');
   } else if (lastPath === __dirname) {
-    console.info('lastPath: %s matches with __dirname', lastPath);
+    console.info(
+      'yo-bow: navigating to lastPath: %s which matches with __dirname',
+      lastPath
+    );
     return '';
   }
 

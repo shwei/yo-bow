@@ -136,7 +136,7 @@ function getEnvVariables() {
     env: process.env.NODE_ENV || 'production',
     src: process.env.LOG_SRC == 'true',
     logLevel: getLoggerLevelName(process.env.LOG_LEVEL),
-    logToJson: process.env.LOG_TO_JSON == 'true' || true
+    logToJson: process.env.LOG_TO_JSON === 'false' ? false : true
   };
 }
 

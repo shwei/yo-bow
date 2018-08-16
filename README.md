@@ -63,6 +63,7 @@ logger.error('success ' + printCount++);
 ### Use the library - Pass in logging options
 
 ```javascript
+const yoBow = require('yo-bow');
 const thisLogOptions = {
   name: 'test 3',
   src: false,

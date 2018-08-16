@@ -15,6 +15,9 @@ function resetYoBowRequire() {
 }
 t.test('Get Bunyan Logger by passing name only', t => {
   try {
+    Object.defineProperty(process, 'env', {
+      value: {LOG_TO_JSON: 'true'}
+    });
     const logger = yoBow.getLogger('test 1');
     let printCount = 0;
 
@@ -184,6 +187,10 @@ t.test('Get Bunyan Logger by passing a full option object', t => {
     Object.defineProperty(process, 'platform', {
       value: 'Windows'
     });
+
+    Object.defineProperty(process, 'env', {
+      value: {LOG_TO_JSON: 'false'}
+    });
     logOptions6.logLevel = 'error';
     resetYoBowRequire();
     let logger6 = yoBow.getLogger(logOptions6);
@@ -282,6 +289,7 @@ t.test('Get Bunyan Logger by passing an option object', t => {
     // yoBow = require(yoBowPath);
     resetYoBowRequire();
 
+    // thisLogOptions.logToJson = true;
     const logger = yoBow.getLogger(thisLogOptions);
     let printCount = 0;
     logger.trace('success ' + printCount++);

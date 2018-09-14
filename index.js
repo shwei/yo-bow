@@ -123,9 +123,7 @@ function resolveOptions(options) {
   if (isTypeOf(options, 'String')) {
     options = {name: options};
   }
-  const newOptions = Object.assign({streams: []}, DEFAULT_OPTIONS, options, {
-    logLevel: getLoggerLevelName(options.logLevel)
-  });
+  const newOptions = Object.assign({streams: []}, DEFAULT_OPTIONS, options);
 
   return newOptions;
 }

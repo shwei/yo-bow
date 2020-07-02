@@ -7,7 +7,11 @@
     "prettify": "prettier --single-quote --write \"./**/*.js\"",
     "test": "tap test/*",
     "test:nyc": "nyc tap ./test/*.js",
-    "test:cov": "nyc report --reporter=html"
+    "test:cov": "nyc report --reporter=html",
+    "deps": "npm run deps:missing; npm run deps:extra; npm run deps:outdated",
+    "deps:missing": "dependency-check package.json --no-dev",
+    "deps:extra": "dependency-check package.json --extra --no-dev",
+    "deps:outdated": "npm outdated --depth 0"
   },
   "repository": {
     "type": "git",
@@ -21,13 +25,14 @@
   "author": "Shang Heng Wei",
   "license": "MIT",
   "dependencies": {
-    "bunyan": "1.8.12"
+    "bunyan": "1.8.14"
   },
   "devDependencies": {
-    "coveralls": "^3.0.11",
-    "nyc": "^15.0.1",
-    "prettier": "^2.0.4",
-    "tap": "^14.10.7"
+    "coveralls": "*",
+    "dependency-check": "*",
+    "nyc": "*",
+    "prettier": "*",
+    "tap": "*"
   },
   "engines": {
     "node": ">=8"
